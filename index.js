@@ -9,16 +9,12 @@ const base = new Airtable({
 
 class AirtableTicker {
 
-    constructor() {
-        this.apiEndpoint = process.env.API_ENDPOINT;
-        this.coinsIcareAbout = [
-            'ripple',
-            'litecoin',
-        ];
+    constructor(coinsToWatch, millisecondsBetween = 60000) {
+        this.coinsIcareAbout = coinsToWatch;
         this.maxRecords = 50;
-        this.recordColumn = 'Current Value (Per Coin)';
-        this.millisecondsBetweeenUpdates = 10000;
-        this.airtableBase = 'Portfolio';
+        this.columnToUpdateInAirtable = process.env.COLUMN_TO_UPDATE_IN_AIRTABLE;
+        this.millisecondsBetweeenUpdates = millisecondsBetween;
+        this.baseToUpdateInAirtable = process.env.BASE_TO_UPDATE_IN_AIRTABLE;
 
         setInterval(() => this.main(), 60000);
     }
@@ -26,7 +22,7 @@ class AirtableTicker {
     main() {
         console.log('Executing Update.', new Date().toISOString());
 
-        base(this.airtableBase).select({
+        base(this.baseToUpdateInAirtable).select({
             maxRecords: this.maxRecords,
             view: "Grid view"
         }).eachPage((records, fetchNextPage) => {
@@ -43,7 +39,7 @@ class AirtableTicker {
 
     async fetchDataFromAPI() {
         return await axios
-            .get(this.apiEndpoint)
+            .get(process.env.API_ENDPOINT)
             .then((response) => response.data).catch(this.handleError);
     }
 
@@ -73,8 +69,8 @@ class AirtableTicker {
                     return;
                 }
 
-                base(this.airtableBase).update(record.id, {
-                    [this.recordColumn]: parseFloat(coin.price_usd),
+                base(this.baseToUpdateInAirtable).update(record.id, {
+                    [this.columnToUpdateInAirtable]: parseFloat(coin.price_usd),
                 }, (err, record) => {
                     this.handleError(err);
 
@@ -85,4 +81,7 @@ class AirtableTicker {
     }
 }
 
-new AirtableTicker();
+new AirtableTicker([
+    'ripple',
+    'litecoin',
+], 60000);
