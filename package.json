@@ -1,0 +1,16 @@
+{
+  "name": "crypto-table",
+  "version": "1.0.0",
+  "description": "Update an Airbase table with cryptocurrency ticker data using a third-party API.",
+  "main": "index.js",
+  "scripts": {
+    "run": "./index.js"
+  },
+  "author": "Aaron Arney",
+  "license": "ISC",
+  "dependencies": {
+    "airtable": "^0.6.0",
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0"
+  }
+}
