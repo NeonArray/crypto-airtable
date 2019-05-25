@@ -7,7 +7,15 @@ This script will poll an API endpoint for fresh ticker data on most crytpo-curre
 
 The class takes an array of strings that define which currencies you care about as well as the milliseconds in time between polls.
 
+`new AirtableTicker(['litecoin', 'ripple'], 60000)`
+
 
 ## Configuring
 
 All of the configuration is done in the `.env` file.
+
+
+---
+
+
+Better documentation to come - not that anybody cares, but I care.
