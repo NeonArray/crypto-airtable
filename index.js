@@ -16,7 +16,7 @@ class AirtableTicker {
         this.baseToUpdateInAirtable = process.env.BASE_TO_UPDATE_IN_AIRTABLE;
         this.rowIDs = new Map();
 
-        setInterval(() => this.main(), 60000);
+        this.getRecordRowIDsFromAirtable();
     }
 
     main() {
