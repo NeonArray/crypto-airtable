@@ -19,8 +19,9 @@ class AirtableTicker {
         this.getRecordRowIDsFromAirtable();
     }
 
-    main() {
-        console.log('Executing Update.', new Date().toISOString());
+    initializeTimer() {
+        setInterval(() => this.updateAirtableFields(), this.millisecondsBetweeenUpdates);
+    }
 
     cacheRowIDs(records) {
         records.forEach((record) => this.rowIDs.set(record.get('ID'), record.id));
