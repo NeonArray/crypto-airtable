@@ -65,12 +65,21 @@ class AirtableTicker {
         });
     }
 
-    async updateAirtable(data) {
-        const allTickers = await this.fetchDataFromAPI();
+    async getUpdateObjectFromTickerData() {
+        const cryptoData = await this.getFilteredTickerData();
+        let updateObject = [];
 
-        if (!allTickers) {
-            return;
-        }
+        cryptoData.forEach((crypto) => {
+            updateObject.push({
+                'id': crypto.airtableID,
+                'fields': {
+                    [this.columnToUpdateInAirtable]: parseFloat(crypto.price_usd),
+                },
+            });
+        });
+
+        return updateObject;
+    }
 
     async updateAirtableFields() {
         const updateObject = await this.getUpdateObjectFromTickerData();
