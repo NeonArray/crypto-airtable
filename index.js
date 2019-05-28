@@ -22,6 +22,10 @@ class AirtableTicker {
     main() {
         console.log('Executing Update.', new Date().toISOString());
 
+    cacheRowIDs(records) {
+        records.forEach((record) => this.rowIDs.set(record.get('ID'), record.id));
+    }
+
         base(this.baseToUpdateInAirtable).select({
             maxRecords: this.maxRecords,
             view: "Grid view"
