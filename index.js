@@ -9,12 +9,12 @@ const base = new Airtable({
 
 class AirtableTicker {
 
-    constructor(coinsToWatch, millisecondsBetween = 60000) {
-        this.coinsIcareAbout = coinsToWatch;
-        this.maxRecords = 50;
+    constructor(millisecondsBetween = 60000, maxRecords = 50) {
+        this.maxRecords = maxRecords;
         this.columnToUpdateInAirtable = process.env.COLUMN_TO_UPDATE_IN_AIRTABLE;
         this.millisecondsBetweeenUpdates = millisecondsBetween;
         this.baseToUpdateInAirtable = process.env.BASE_TO_UPDATE_IN_AIRTABLE;
+        this.rowIDs = new Map();
 
         setInterval(() => this.main(), 60000);
     }
