@@ -87,7 +87,5 @@ class AirtableTicker {
     }
 }
 
-new AirtableTicker([
-    'ripple',
-    'litecoin',
-], 60000);
+const AT = new AirtableTicker(3000);
+AT.initializeTimer();
