@@ -50,7 +50,8 @@ class AirtableTicker {
     async fetchDataFromAPI() {
         return await axios
             .get(process.env.API_ENDPOINT)
-            .then((response) => response.data).catch(this.handleError);
+            .then((response) => response.data)
+            .catch((err) => console.error(err, new Date().toISOString()));
     }
 
     parseDataAgainstWhitelist(data, whitelist) {
