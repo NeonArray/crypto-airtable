@@ -72,26 +72,18 @@ class AirtableTicker {
             return;
         }
 
-        const tickers = this.parseDataAgainstWhitelist(allTickers, this.coinsIcareAbout);
-        
-        this.coinsIcareAbout.forEach((row) => {
-            const coin = tickers.filter((items) => items.id === row)[0];
-            
-            data.forEach((record) => {
+    async updateAirtableFields() {
+        const updateObject = await this.getUpdateObjectFromTickerData();
 
-                if (record.get('ID') !== row) {
+        base(this.baseToUpdateInAirtable)
+            .update(updateObject, function done(err) {
+                if (err) {
+                    console.error(err, new Date().toISOString());
                     return;
                 }
 
-                base(this.baseToUpdateInAirtable).update(record.id, {
-                    [this.columnToUpdateInAirtable]: parseFloat(coin.price_usd),
-                }, (err, record) => {
-                    this.handleError(err);
-
-                    console.log('Record Updated', record.id);
-                });
-            }); 
-        });
+                console.log('Records Updated');
+            });
     }
 }
 
