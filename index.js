@@ -27,18 +27,24 @@ class AirtableTicker {
         records.forEach((record) => this.rowIDs.set(record.get('ID'), record.id));
     }
 
-        base(this.baseToUpdateInAirtable).select({
-            maxRecords: this.maxRecords,
-            view: "Grid view"
-        }).eachPage((records, fetchNextPage) => {
-            this.updateAirtable(records);
-        }, this.handleError);
-    }
+    async getRecordRowIDsFromAirtable() {
+        console.log('Caching Record ID\'s.', new Date().toISOString());
+
+        return await new Promise((resolve, reject) => {
+            base(this.baseToUpdateInAirtable).select({
+                maxRecords: this.maxRecords,
+                view: "Grid view"
+            }).eachPage((records, fetchNextPage) => {
+                this.cacheRowIDs(records);
+                fetchNextPage();
+            }, (err) => {
+                if (err) {
+                    reject(err);
+                }
 
                 resolve();
             });
         });
-    }
     }
 
     async fetchDataFromAPI() {
