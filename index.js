@@ -54,10 +54,13 @@ class AirtableTicker {
             .catch((err) => console.error(err, new Date().toISOString()));
     }
 
-    parseDataAgainstWhitelist(data, whitelist) {
-        return data.filter((row) => {
-            if (whitelist.join(' ').indexOf(row.id) > -1) {
-                return row;
+    async getFilteredTickerData() {
+        const allTickerData = await this.fetchDataFromAPI();
+
+        return allTickerData.filter((entry) => {
+            if (this.rowIDs.has(entry.id)) {
+                entry.airtableID = this.rowIDs.get(entry.id);
+                return entry;
             }
         });
     }
