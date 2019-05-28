@@ -35,11 +35,10 @@ class AirtableTicker {
         }, this.handleError);
     }
 
-    handleError(error) {
-        if (error) {
-            console.error(error, new Date().toISOString());
-            return;
-        }
+                resolve();
+            });
+        });
+    }
     }
 
     async fetchDataFromAPI() {
